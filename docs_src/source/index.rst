@@ -1,22 +1,11 @@
-.. test_docs_main documentation master file, created by Copilot.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+BrainMaze Unified Portal
+========================
 
-Welcome to test_docs_main's documentation!
-===========================================
+Welcome to the central documentation portal.
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
+   :caption: Component Packages
 
-   test_docs_A/index
-   test_docs_B/index
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+   Test Docs A </test_docs_A/index.html>
+   Test Docs B </test_docs_B/index.html>
