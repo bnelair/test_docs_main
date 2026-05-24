@@ -36,7 +36,7 @@ jobs:
 
       - name: Download test_docs_B artifact
         env:
-          GH_TOKEN: ${{ secrets.token }}
+          GH_TOKEN: ${{ secrets.DOCS_PAT }}
         run: gh run download --repo bnelair/test_docs_B -n docs-html --dir public/test_docs_B
 
       - name: Upload artifact to GitHub Pages
