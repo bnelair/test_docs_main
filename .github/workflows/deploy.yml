@@ -1,0 +1,49 @@
+name: Aggregate and Deploy Docs
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  actions: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout central repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install sphinx sphinx-book-theme
+
+      - name: Build main landing page
+        run: sphinx-build -b html docs_src/source public
+
+      - name: Download test_docs_A artifact
+        env:
+          GH_TOKEN: ${{ github.DOCS_PAT }}
+        run: gh run download --repo bnelair/test_docs_A -n docs-html --dir public/test_docs_A
+
+      - name: Download test_docs_B artifact
+        env:
+          GH_TOKEN: ${{ github.DOCS_PAT }}
+        run: gh run download --repo bnelair/test_docs_B -n docs-html --dir public/test_docs_B
+
+      - name: Upload artifact to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
