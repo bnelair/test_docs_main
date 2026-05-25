@@ -32,12 +32,12 @@ jobs:
       - name: Download test_docs_A artifact
         env:
           GH_TOKEN: ${{ secrets.DOCS_PAT }}
-        run: gh run download --repo bnelair/test_docs_A -n docs-html --dir public/test_docs_A
+        run: gh run download --repo bnelair/test_docs_A -n docs-html --dir public/docs_A
 
       - name: Download test_docs_B artifact
         env:
           GH_TOKEN: ${{ secrets.DOCS_PAT }}
-        run: gh run download --repo bnelair/test_docs_B -n docs-html --dir public/test_docs_B
+        run: gh run download --repo bnelair/test_docs_B -n docs-html --dir public/docs_B
 
       - name: Build Unified Search Index
         run: npx -y pagefind --site public
