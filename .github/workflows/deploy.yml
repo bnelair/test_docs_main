@@ -9,7 +9,6 @@ permissions:
   contents: read
   pages: write
   id-token: write
-  actions: read
 
 jobs:
   build-and-deploy:
@@ -29,19 +28,27 @@ jobs:
       - name: Build main landing page
         run: sphinx-build -b html docs_src/source public
 
-      - name: Download test_docs_A artifact
-        env:
-          GH_TOKEN: ${{ secrets.DOCS_PAT }}
-        run: gh run download --repo bnelair/test_docs_A -n docs-html --dir public/docs_A
+      - name: Checkout Test Docs A
+        uses: actions/checkout@v4
+        with:
+          repository: bnelair/test_docs_A
+          ref: docs-build
+          path: public/docs_A
+          token: ${{ secrets.DOCS_PAT }}
 
-      - name: Download test_docs_B artifact
-        env:
-          GH_TOKEN: ${{ secrets.DOCS_PAT }}
-        run: gh run download --repo bnelair/test_docs_B -n docs-html --dir public/docs_B
+      - name: Checkout Test Docs B
+        uses: actions/checkout@v4
+        with:
+          repository: bnelair/test_docs_B
+          ref: docs-build
+          path: public/docs_B
+          token: ${{ secrets.DOCS_PAT }}
+
+      - name: Bypass Jekyll processing
+        run: touch public/.nojekyll
 
       - name: Build Unified Search Index
         run: npx -y pagefind --site public
-
 
       - name: Upload artifact to GitHub Pages
         uses: actions/upload-pages-artifact@v3
@@ -51,4 +58,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
